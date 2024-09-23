@@ -1,13 +1,13 @@
 package com.example.openclassrooms.chatop_back_end.services;
 
-
-import java.util.Optional;
-
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.openclassrooms.chatop_back_end.dto.UserDTO;
+import com.example.openclassrooms.chatop_back_end.dto.UserLoginDTO;
 import com.example.openclassrooms.chatop_back_end.models.User;
 import com.example.openclassrooms.chatop_back_end.repositories.UserRepository;
 
@@ -23,20 +23,30 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public Optional<User> getUserById(final Long id) {
-        return userRepository.findById(id);
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public UserDTO getUserById(final Long id) {
+        return modelMapper.map(userRepository.findById(id), UserDTO.class);
     }
 
-    public User registerNewUser(User user) {
+    public UserDTO registerNewUser(UserLoginDTO user) {
         User newUser = new User();
-        newUser.setEmail(user.getEmail());
         newUser.setName(user.getName());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(newUser);
+        newUser.setEmail(user.getEmail());
+        return modelMapper.map(userRepository.save(newUser), UserDTO.class);
     }
 
-    public User getCurrentUser(Authentication authentication) {
+    public UserDTO getCurrentUser(Authentication authentication) {
+        UserDTO currentUser = new UserDTO();
         String email = authentication.getName();
-        return userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
+        currentUser.setId(user.getId());
+        currentUser.setEmail(user.getEmail());
+        currentUser.setName(user.getName());
+        currentUser.setCreated_at(user.getCreated_at());
+        currentUser.setUpdated_at(user.getUpdated_at());
+        return currentUser;
     }
 }

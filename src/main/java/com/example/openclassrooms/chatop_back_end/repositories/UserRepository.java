@@ -7,5 +7,5 @@ import com.example.openclassrooms.chatop_back_end.models.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
+    public User findByEmail(String email);
 }

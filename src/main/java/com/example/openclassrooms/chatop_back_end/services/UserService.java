@@ -30,12 +30,12 @@ public class UserService {
         return modelMapper.map(userRepository.findById(id), UserDTO.class);
     }
 
-    public UserDTO registerNewUser(UserLoginDTO user) {
+    public void registerNewUser(UserLoginDTO user) {
         User newUser = new User();
         newUser.setName(user.getName());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         newUser.setEmail(user.getEmail());
-        return modelMapper.map(userRepository.save(newUser), UserDTO.class);
+        modelMapper.map(userRepository.save(newUser), UserDTO.class);
     }
 
     public UserDTO getCurrentUser(Authentication authentication) {

@@ -1,12 +1,13 @@
 package com.example.openclassrooms.chatop_back_end.services;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.openclassrooms.chatop_back_end.dto.MessageDTO;
 import com.example.openclassrooms.chatop_back_end.models.Message;
 import com.example.openclassrooms.chatop_back_end.repositories.MessageRepository;
+import com.example.openclassrooms.chatop_back_end.repositories.RentalRepository;
+import com.example.openclassrooms.chatop_back_end.repositories.UserRepository;
 
 import lombok.Data;
 
@@ -17,20 +18,17 @@ public class MessageService {
     @Autowired
     private MessageRepository messageRepository;
 
-    public Optional<Message> getMessageById(final Long id) {
-        return messageRepository.findById(id);
-    }
+    @Autowired
+    private UserRepository userRepository;
 
-    public Iterable<Message> getMessages() {
-        return messageRepository.findAll();
-    }
+    @Autowired
+    private RentalRepository rentalRepository;
 
-    public void deleteMessageById(final Long id) {
-        messageRepository.deleteById(id);
-    }
-
-    public Message saveMessage(Message message) {
-        Message savedEmployee = messageRepository.save(message);
-        return savedEmployee;
+    public void saveMessage(MessageDTO messageDTO) {
+        Message message = new Message();
+        message.setMessage(messageDTO.getMessage());
+        message.setUser(userRepository.findById(messageDTO.getUser_id()).get());
+        message.setRental(rentalRepository.findById(messageDTO.getRental_id()).get());
+        messageRepository.save(message);
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.openclassrooms.chatop_back_end.dto.MessageDTO;
 import com.example.openclassrooms.chatop_back_end.dto.RentalDTO;
 import com.example.openclassrooms.chatop_back_end.dto.UserDTO;
 import com.example.openclassrooms.chatop_back_end.services.RentalService;
@@ -19,11 +18,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
@@ -74,10 +73,30 @@ public class RentalController {
 		rentalDTO.setPicture(pictureUrl);
 
 		// Ajouter le nouveau Rental à la base de données
-		RentalDTO newRental = rentalService.addRental(rentalDTO);
+		rentalService.addRental(rentalDTO);
 
 		// Retourner le nouveau Rental
-		return ResponseEntity.ok(newRental);
+		return ResponseEntity.ok(rentalDTO);
     }
+
+    @PutMapping("/{id}")  // tester @ModelAttribute RentalDTO ...
+	public ResponseEntity<RentalDTO> putRentalById(
+		@PathVariable("id") final Integer id,
+		@RequestParam("name") String name,
+		@RequestParam("surface") Integer surface,
+		@RequestParam("price") Integer price,
+		@RequestParam("description") String description)
+		{
+		
+		RentalDTO rentalDTO = rentalService.getRental(Long.valueOf(id.longValue()));
+	
+		rentalDTO.setName(name);
+		rentalDTO.setSurface(surface);
+		rentalDTO.setPrice(price);
+		rentalDTO.setDescription(description);
+		rentalDTO.setUpdated_at(LocalDateTime.now());
+	
+		return ResponseEntity.ok(rentalService.updateRental(rentalDTO, id));
+	}
     
 }

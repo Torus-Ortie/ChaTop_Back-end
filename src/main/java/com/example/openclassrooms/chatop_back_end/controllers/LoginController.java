@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -24,16 +23,13 @@ import com.example.openclassrooms.chatop_back_end.services.JWTService;
 import com.example.openclassrooms.chatop_back_end.services.UserService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class LoginController {
 
 	private JWTService jwtService;
 
 	@Autowired
     private UserService userService;
-	
-	@Autowired
-    private AuthenticationManager authenticationManager;
 
 	public LoginController(JWTService jwtService) {
 		this.jwtService = jwtService;
@@ -54,9 +50,7 @@ public class LoginController {
     @ResponseBody
 	public ResponseEntity<Map<String, String>> getToken(@RequestBody UserLoginDTO userLoginDTO) {
 		try {
-			Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(userLoginDTO.getEmail(), userLoginDTO.getPassword())
-			);
+			Authentication authentication = new UsernamePasswordAuthenticationToken(userLoginDTO.getEmail(), userLoginDTO.getPassword());
             String token = jwtService.generateToken(authentication);
             return ResponseEntity.ok(Collections.singletonMap("token", token));
 		} catch (AuthenticationException e) {

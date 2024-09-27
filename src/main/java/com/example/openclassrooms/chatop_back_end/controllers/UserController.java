@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/api/user/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public ResponseEntity<UserDTO> getUserById(@PathVariable("id") final Long id) {

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/rentals")
+@RequestMapping("/api/rentals")
 public class RentalController {
 
     @Autowired

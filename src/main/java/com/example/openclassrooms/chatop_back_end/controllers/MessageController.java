@@ -19,7 +19,7 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    @PostMapping("/messages")
+    @PostMapping("/api/messages")
     public ResponseEntity<Map<String, String>> createMessage(@RequestBody MessageDTO messageDTO) {
         messageService.saveMessage(messageDTO);
         return new ResponseEntity<>(Collections.singletonMap("message", "Message sent."), HttpStatus.CREATED);

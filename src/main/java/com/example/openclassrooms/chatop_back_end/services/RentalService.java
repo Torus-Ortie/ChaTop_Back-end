@@ -1,9 +1,7 @@
 package com.example.openclassrooms.chatop_back_end.services;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +44,19 @@ public class RentalService {
 
     public Map<String, List<RentalDTO>> getRentals() {
         List<Rental> rentals = rentalRepository.findAll();
-        List<RentalDTO> rentalDTOs = rentals.stream().map(rental -> modelMapper.map(rental, RentalDTO.class)).toList();
+        List<RentalDTO> rentalDTOs = rentals.stream().map(rental -> {
+            RentalDTO rentalDTO = modelMapper.map(rental, RentalDTO.class);
+            rentalDTO.setOwner_id(rental.getOwner().getId());
+            return rentalDTO;
+        }).collect(Collectors.toList());
         return Collections.singletonMap("rentals", rentalDTOs);
     }
 
     public RentalDTO getRental(final Long id) {
-        return modelMapper.map(rentalRepository.findById(id), RentalDTO.class);
+        Rental rental = rentalRepository.findById(id).get();
+        RentalDTO rentalDTO = modelMapper.map(rentalRepository.findById(id), RentalDTO.class);
+        rentalDTO.setOwner_id(rental.getOwner().getId());
+        return rentalDTO;
     }
 
     public String storeFile(MultipartFile picture) {

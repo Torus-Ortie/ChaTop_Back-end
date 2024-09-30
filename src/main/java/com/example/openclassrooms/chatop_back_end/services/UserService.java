@@ -26,10 +26,6 @@ public class UserService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public UserDTO getUserById(final Long id) {
-        return modelMapper.map(userRepository.findById(id), UserDTO.class);
-    }
-
     public void registerNewUser(UserLoginDTO user) {
         User newUser = new User();
         newUser.setName(user.getName());
@@ -48,5 +44,9 @@ public class UserService {
         currentUser.setCreated_at(user.getCreated_at());
         currentUser.setUpdated_at(user.getUpdated_at());
         return currentUser;
+    }
+
+    public UserDTO getUserById(final Long id) {
+        return modelMapper.map(userRepository.findById(id), UserDTO.class);
     }
 }

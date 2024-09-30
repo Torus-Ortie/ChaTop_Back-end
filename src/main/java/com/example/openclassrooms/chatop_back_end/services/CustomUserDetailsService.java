@@ -1,4 +1,4 @@
-/*package com.example.openclassrooms.chatop_back_end.services;
+package com.example.openclassrooms.chatop_back_end.services;
 
 import java.util.ArrayList;
 
@@ -27,4 +27,4 @@ public class CustomUserDetailsService implements UserDetailsService {
             .build();
     }
 
-}*/
+}

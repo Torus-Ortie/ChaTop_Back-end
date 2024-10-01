@@ -28,6 +28,8 @@ public class UserService {
 
     public void registerNewUser(UserLoginDTO user) {
         User newUser = new User();
+
+        // Convert UserDTO to User
         newUser.setName(user.getName());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         newUser.setEmail(user.getEmail());
@@ -38,6 +40,8 @@ public class UserService {
         UserDTO currentUser = new UserDTO();
         String email = authentication.getName();
         User user = userRepository.findByEmail(email);
+
+        // Convert User to UserDTO
         currentUser.setId(user.getId());
         currentUser.setEmail(user.getEmail());
         currentUser.setName(user.getName());

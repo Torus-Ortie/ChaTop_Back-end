@@ -57,10 +57,10 @@ public class RentalController {
 		@RequestParam("picture") MultipartFile picture,
 		@RequestParam("description") String description,
 		Authentication authentication) {
-        // Récupérer l'utilisateur actuellement authentifié
+        // Get current authenticated user
     	UserDTO currentUser = userService.getCurrentUser(authentication);
 
-		// Créer un nouveau RentalDTO
+		// Create new RentalDTO
 		RentalDTO rentalDTO = new RentalDTO();
 		rentalDTO.setName(name);
 		rentalDTO.setSurface(surface);
@@ -68,14 +68,13 @@ public class RentalController {
 		rentalDTO.setDescription(description);
 		rentalDTO.setOwner_id(currentUser.getId());
 
-		// Stocker l'image et obtenir son URL
+		// Store the image and get its URL
 		String pictureUrl = rentalService.storeFile(picture);
 		rentalDTO.setPicture(pictureUrl);
 
-		// Ajouter le nouveau Rental à la base de données
+		// Add the new Rental to the database
 		rentalService.addRental(rentalDTO);
 
-		// Retourner le nouveau Rental
 		return ResponseEntity.ok(rentalDTO);
     }
 
@@ -90,6 +89,7 @@ public class RentalController {
 		
 		RentalDTO rentalDTO = rentalService.getRental(Long.valueOf(id.longValue()));
 	
+		// Update Rental 
 		rentalDTO.setName(name);
 		rentalDTO.setSurface(surface);
 		rentalDTO.setPrice(price);

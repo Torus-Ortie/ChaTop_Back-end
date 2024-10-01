@@ -26,6 +26,8 @@ public class MessageService {
 
     public void saveMessage(MessageDTO messageDTO) {
         Message message = new Message();
+
+        // Convert Message to MessageDTO
         message.setMessage(messageDTO.getMessage());
         message.setUser(userRepository.findById(messageDTO.getUser_id()).get());
         message.setRental(rentalRepository.findById(messageDTO.getRental_id()).get());

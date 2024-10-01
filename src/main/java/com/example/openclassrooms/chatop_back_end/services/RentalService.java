@@ -44,6 +44,8 @@ public class RentalService {
 
     public Map<String, List<RentalDTO>> getRentals() {
         List<Rental> rentals = rentalRepository.findAll();
+
+        // Set Owner Id to a new list of RentalDTO
         List<RentalDTO> rentalDTOs = rentals.stream().map(rental -> {
             RentalDTO rentalDTO = modelMapper.map(rental, RentalDTO.class);
             rentalDTO.setOwner_id(rental.getOwner().getId());
@@ -77,7 +79,7 @@ public class RentalService {
     @Transactional
     public void addRental(RentalDTO rentalDTO) {
         try {
-            // Convertir le RentalDTO en Rental
+            // Convert RentalDTO to Rental
             Rental rental = new Rental();
             rental.setName(rentalDTO.getName());
             rental.setSurface(rentalDTO.getSurface());
@@ -87,15 +89,15 @@ public class RentalService {
             rental.setCreated_at(rentalDTO.getCreated_at());
             rental.setUpdated_at(rentalDTO.getUpdated_at());
 
-            // Récupérer l'utilisateur qui est le propriétaire du Rental
+            // Retrieve the user who is the owner of the Rental
             User owner = userRepository.findById(rentalDTO.getOwner_id()).get();
 
-            // Ici, nous utilisons EntityManager pour persister ou mettre à jour le propriétaire dans la même session Hibernate que la persistance de la location.
+            // EntityManager to persist or update the owner in the same Hibernate session as persisting the tenancy.
             entityManager.persist(owner);
             
             rental.setOwner(owner);
         
-            // Enregistrer le nouveau Rental dans la base de données
+            // Save the new Rental in the database
             rentalRepository.save(rental);
         } catch (Exception e) {
             throw new RuntimeException("Error during rental creation: " + e.getMessage());
@@ -104,6 +106,8 @@ public class RentalService {
 
     public RentalDTO updateRental(RentalDTO rentalDTO, Integer id) {
         Rental rental = rentalRepository.findById(Long.valueOf(id.longValue())).get();
+
+        // Convert Rental to RentalDTO
         rental.setName(rentalDTO.getName());
         rental.setSurface(rentalDTO.getSurface());
         rental.setPrice(rentalDTO.getPrice());

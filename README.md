@@ -34,16 +34,13 @@ Important Note: Replace `mysql_username` with your actual MySQL username.
   The following variables need to updated with your own values
   
   ```properties
-  server.port=${SERVER_PORT} #example: 3001
-  server.url=${SERVER_URL} #example: http://localhost:3001
   
   #use the database URL, username, and password from your MySQL server
-  spring.datasource.url=${DB_URL}
   spring.datasource.username=${DB_USERNAME}
   spring.datasource.password=${DB_PASSWORD}
   
   jwt.key=${JWT_KEY} #a secure, random string (UUID recommended)
-  client.url=${CLIENT_URL} #example: http://localhost:4200
+  image.path=${IMAGE_PATH} #example: http://localhost:4200
   springdoc.swagger-ui.oauth.clientSecret=${JWT_KEY} #the same secure, random string (UUID recommended) used for jwt.key
   ```
 

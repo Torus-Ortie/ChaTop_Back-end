@@ -22,7 +22,7 @@ Prior to executing the ChaTop Backend API, adhere to these installation procedur
    Open a terminal and run the command
 
   ```bash
-  mysql -u mysql_username -p < chatop.sql
+  mysql -u mysql_username -p < script.sql
   ```
 
 Important Note: Replace `mysql_username` with your actual MySQL username.

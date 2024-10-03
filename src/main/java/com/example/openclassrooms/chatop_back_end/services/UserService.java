@@ -11,9 +11,6 @@ import com.example.openclassrooms.chatop_back_end.dto.UserLoginDTO;
 import com.example.openclassrooms.chatop_back_end.models.User;
 import com.example.openclassrooms.chatop_back_end.repositories.UserRepository;
 
-import lombok.Data;
-
-@Data
 @Service
 public class UserService {
 

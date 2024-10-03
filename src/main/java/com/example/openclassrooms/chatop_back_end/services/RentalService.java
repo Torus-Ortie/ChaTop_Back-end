@@ -22,9 +22,7 @@ import com.example.openclassrooms.chatop_back_end.repositories.RentalRepository;
 import com.example.openclassrooms.chatop_back_end.repositories.UserRepository;
 
 import jakarta.persistence.EntityManager;
-import lombok.Data;
 
-@Data
 @Service
 public class RentalService {
     @Value("${image.path}")
@@ -55,7 +53,7 @@ public class RentalService {
     }
 
     public RentalDTO getRental(final Long id) {
-        Rental rental = rentalRepository.findById(id).get();
+        Rental rental = rentalRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Rental not found with id : " + id));
         RentalDTO rentalDTO = modelMapper.map(rentalRepository.findById(id), RentalDTO.class);
         rentalDTO.setOwner_id(rental.getOwner().getId());
         return rentalDTO;
@@ -90,7 +88,7 @@ public class RentalService {
             rental.setUpdated_at(rentalDTO.getUpdated_at());
 
             // Retrieve the user who is the owner of the Rental
-            User owner = userRepository.findById(rentalDTO.getOwner_id()).get();
+            User owner = userRepository.findById(rentalDTO.getOwner_id()).orElseThrow(() -> new NoSuchElementException("Onwer not found with id : " + (rentalDTO.getOwner_id())));
 
             // EntityManager to persist or update the owner in the same Hibernate session as persisting the tenancy.
             entityManager.persist(owner);
@@ -105,7 +103,7 @@ public class RentalService {
     }
 
     public RentalDTO updateRental(RentalDTO rentalDTO, Integer id) {
-        Rental rental = rentalRepository.findById(Long.valueOf(id.longValue())).get();
+        Rental rental = rentalRepository.findById(Long.valueOf(id.longValue())).orElseThrow(() -> new NoSuchElementException("Rental not found with id : " + id));
 
         // Convert Rental to RentalDTO
         rental.setName(rentalDTO.getName());

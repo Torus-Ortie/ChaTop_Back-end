@@ -9,9 +9,8 @@ import com.example.openclassrooms.chatop_back_end.repositories.MessageRepository
 import com.example.openclassrooms.chatop_back_end.repositories.RentalRepository;
 import com.example.openclassrooms.chatop_back_end.repositories.UserRepository;
 
-import lombok.Data;
+import java.util.NoSuchElementException;
 
-@Data
 @Service
 public class MessageService {
 
@@ -29,8 +28,8 @@ public class MessageService {
 
         // Convert Message to MessageDTO
         message.setMessage(messageDTO.getMessage());
-        message.setUser(userRepository.findById(messageDTO.getUser_id()).get());
-        message.setRental(rentalRepository.findById(messageDTO.getRental_id()).get());
+        message.setUser(userRepository.findById(messageDTO.getUser_id()).orElseThrow(() -> new NoSuchElementException("User not found with id : " + messageDTO.getUser_id())));
+        message.setRental(rentalRepository.findById(messageDTO.getRental_id()).orElseThrow(() -> new NoSuchElementException("Rental not found with id : " + messageDTO.getUser_id())));
         messageRepository.save(message);
     }
 }

@@ -62,7 +62,7 @@ public class RentalService {
     public String storeFile(MultipartFile picture) {
         try {
             // Save the image file
-            String fileName = StringUtils.cleanPath(Objects.requireNonNull(picture.getOriginalFilename()));
+            String fileName = UUID.randomUUID().toString() + "." + getFileExtension(StringUtils.cleanPath(Objects.requireNonNull(picture.getOriginalFilename())));
             Path path = Paths.get("src/main/resources/static/images/" + fileName);
             Files.copy(picture.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 
@@ -114,5 +114,16 @@ public class RentalService {
         rentalRepository.save(rental);
 
         return rentalDTO;
+    }
+
+    private String getFileExtension(String filename) {
+        if (filename == null) {
+            return null;
+        }
+        int dotIndex = filename.lastIndexOf(".");
+        if (dotIndex >= 0) {
+            return filename.substring(dotIndex + 1);
+        }
+        return "";
     }
 }

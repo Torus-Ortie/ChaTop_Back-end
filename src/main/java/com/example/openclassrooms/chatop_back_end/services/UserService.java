@@ -23,6 +23,12 @@ public class UserService {
     @Autowired
     private ModelMapper modelMapper;
 
+    /**
+     * Save a new user in Database
+     *
+     * @param user - The User to save mapped as UserLoginDTO
+     *
+     */
     public void registerNewUser(UserLoginDTO user) {
         User newUser = new User();
 
@@ -33,6 +39,13 @@ public class UserService {
         modelMapper.map(userRepository.save(newUser), UserDTO.class);
     }
 
+    /**
+     * Get the current connected user of the session
+     *
+     * @param authentication - The current session properties
+     * @return a User mapped as UserDTO
+     *
+     */
     public UserDTO getCurrentUser(Authentication authentication) {
         UserDTO currentUser = new UserDTO();
         String email = authentication.getName();
@@ -47,6 +60,13 @@ public class UserService {
         return currentUser;
     }
 
+    /**
+     * Get a specific user in Database
+     *
+     * @param id - The identification of the User to get
+     * @return a User mapped as UserDTO
+     *
+     */
     public UserDTO getUserById(final Long id) {
         return modelMapper.map(userRepository.findById(id), UserDTO.class);
     }

@@ -23,6 +23,12 @@ public class MessageService {
     @Autowired
     private RentalRepository rentalRepository;
 
+    /**
+     * Save a new message in Database
+     *
+     * @param messageDTO - The Message to save mapped as MessageDTO
+     *
+     */
     public void saveMessage(MessageDTO messageDTO) {
         Message message = new Message();
 

@@ -40,6 +40,12 @@ public class RentalService {
     @Autowired
     private ModelMapper modelMapper;
 
+    /**
+     * Get all the Rentals store in Database
+     *
+     * @returns Map<String, List<RentalDTO>> List of all rentals mapped as RentalDTO
+     *
+     */
     public Map<String, List<RentalDTO>> getRentals() {
         List<Rental> rentals = rentalRepository.findAll();
 
@@ -52,6 +58,13 @@ public class RentalService {
         return Collections.singletonMap("rentals", rentalDTOs);
     }
 
+    /**
+     * Get a specific Rental object in Database
+     *
+     * @param id - The identification of the Rental to get
+     * @returns a rental mapped as RentalDTO
+     *
+     */
     public RentalDTO getRental(final Long id) {
         Rental rental = rentalRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Rental not found with id : " + id));
         RentalDTO rentalDTO = modelMapper.map(rentalRepository.findById(id), RentalDTO.class);
@@ -59,6 +72,13 @@ public class RentalService {
         return rentalDTO;
     }
 
+    /**
+     * Store a picture for rentals
+     *
+     * @param picture - The picture to store
+     * @returns the path of the saved picture
+     *
+     */
     public String storeFile(MultipartFile picture) {
         try {
             // Save the image file
@@ -74,6 +94,12 @@ public class RentalService {
         }
     }
 
+    /**
+     * Save a new rental in Database
+     *
+     * @param rentalDTO - The Rental to save mapped as RentalDTO
+     *
+     */    
     @Transactional
     public void addRental(RentalDTO rentalDTO) {
         try {
@@ -102,6 +128,14 @@ public class RentalService {
         } 
     }
 
+    /**
+     * Update a specific rental in Database
+     *
+     * @param rentalDTO - The new Rental to save mapped as RentalDTO
+     * @param id - The identification of the Rental to update
+     * @returns a rental mapped as RentalDTO
+     *
+     */
     public RentalDTO updateRental(RentalDTO rentalDTO, Integer id) {
         Rental rental = rentalRepository.findById(Long.valueOf(id.longValue())).orElseThrow(() -> new NoSuchElementException("Rental not found with id : " + id));
 
@@ -116,6 +150,13 @@ public class RentalService {
         return rentalDTO;
     }
 
+    /**
+     * Get the extension of a file
+     *
+     * @param filename - The full name of the file
+     * @returns the extension of the file if there is one
+     *
+     */
     private String getFileExtension(String filename) {
         if (filename == null) {
             return null;
